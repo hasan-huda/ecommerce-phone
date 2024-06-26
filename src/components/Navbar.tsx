@@ -3,11 +3,18 @@ import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
 import { ArrowRight } from "lucide-react";
-import { useAuth, logOut } from "@/lib/auth";
-
+import { useAuth } from "@/lib/useAuth";
+import { logOut } from "@/lib/auth";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const { user, isAdmin } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logOut;
+    router.push("/");
+  };
   return (
     <nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
       <MaxWidthWrapper>
@@ -20,7 +27,7 @@ const Navbar = () => {
             {user ? (
               <>
                 <button
-                  onClick={logOut}
+                  onClick={() => handleLogout()}
                   className={buttonVariants({ size: "sm", variant: "ghost" })}
                 >
                   {" "}

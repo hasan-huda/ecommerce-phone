@@ -1,20 +1,33 @@
 "use client";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signIn, googleSignUp } from "@/lib/auth"; // Assuming googleSignUp is exported from auth
 import { useRouter } from "next/navigation";
+import { UserNew } from "@/app/configure/preview/DesignPreview";
+import { useQuery } from "@tanstack/react-query";
+import { createUserIfNotExists } from "@/app/configure/preview/actions";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-
+  const [configId, setConfigId] = useState<string | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const configurationId = localStorage.getItem("configurationId");
+    if (configurationId) setConfigId(configurationId);
+  }, []);
 
   const handleSignIn = async () => {
     try {
       await signIn(email, password);
-      router.push("/");
+      if (configId) {
+        localStorage.removeItem("configurationId");
+        router.push(`/configure/preview?id=${configId}`);
+      } else {
+        router.push("/");
+      }
     } catch (error) {
       setError("Failed to sign in");
     }
@@ -22,12 +35,19 @@ export default function Login() {
 
   const handleGoogleSignUp = async () => {
     try {
-      await googleSignUp();
-      router.push("/");
+      const user = await googleSignUp();
+      if (configId) {
+        localStorage.removeItem("configurationId");
+        router.push(`/configure/preview?id=${configId}`);
+      } else {
+        router.push("/");
+      }
     } catch (error) {
       setError("Failed to sign in with Google");
     }
   };
+
+
 
   return (
     <>
