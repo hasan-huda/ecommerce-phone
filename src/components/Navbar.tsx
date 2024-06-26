@@ -12,7 +12,7 @@ const Navbar = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    logOut;
+    logOut();
     router.push("/");
   };
   return (
