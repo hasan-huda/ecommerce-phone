@@ -50,9 +50,7 @@ export async function POST(req: Request) {
               country: shippingAddress!.country!,
               postalCode: shippingAddress!.postal_code!,
               street: shippingAddress!.line1!,
-              state: shippingAddress!.state,
-              phoneNumber: session.customer_details!.phone!,
-            },
+              state: shippingAddress!.state            },
           },
           billingAddress: {
             create: {
@@ -61,9 +59,7 @@ export async function POST(req: Request) {
               country: billingAddress!.country!,
               postalCode: billingAddress!.postal_code!,
               street: billingAddress!.line1!,
-              state: billingAddress!.state,
-              phoneNumber: session.customer_details!.phone!,
-            },
+              state: billingAddress!.state            },
           },
         },
       });
