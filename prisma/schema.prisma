@@ -71,7 +71,7 @@ model Order {
   id                String           @id @default(cuid())
   configurationId   String
   configuration     Configuration    @relation(fields: [configurationId], references: [id])
-  User              User             @relation(fields: [userId], references: [id])
+  user              User             @relation(fields: [userId], references: [id])
   userId            String
   amount            Float
   isPaid            Boolean          @default(false)

@@ -9,24 +9,7 @@ import {
   User,
 } from "firebase/auth";
 import { auth } from "./firebaseConfig";
-import { db } from "@/db";
-// import { useState, useEffect } from "react";
-
-// export const createUserIfNotExists = async (user: User) => {
-//   const existingUser = await db.user.findFirst({
-//     where: { id: user.uid },
-//   });
-
-//   if (!existingUser) {
-//     console.log("Creating user")
-//     await db.user.create({
-//       data: {
-//         id: user.uid,
-//         email: user.email || "",
-//       },
-//     });
-//   }
-// };
+import cookie from 'js-cookie';
 
 export const signUp = async (email: string, password: string) => {
   try {
@@ -75,10 +58,15 @@ export const signIn = async (email: string, password: string) => {
 
 export const logOut = async () => {
   try {
-    console.log("Signed out");
+    // Clear the isAdmin cookie
+    cookie.remove('isAdmin');
+    console.log('isAdmin cookie removed');
+
+    // Sign out the user
     await signOut(auth);
+    console.log('Signed out');
   } catch (error) {
-    console.error("Error signing out:", error);
+    console.error('Error signing out:', error);
     throw error;
   }
 };
